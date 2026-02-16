@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support - Vietnam Geography Quiz</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --card: #020617;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.16);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: rgba(148, 163, 184, 0.35);
+      --danger: #f97373;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.9);
+      --radius-lg: 20px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text',
+        'Segoe UI', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #1e293b, #020617 55%, #000000);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .card {
+      background: radial-gradient(circle at top, #020617 0%, #020617 55%, #000000 100%);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 28px 24px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: -40% auto auto -25%;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.16), transparent 65%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: auto -30% -45% auto;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.15), transparent 65%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .app-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-pill {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: conic-gradient(from 210deg, #22c55e, #38bdf8, #22c55e);
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8), 0 18px 45px rgba(15, 23, 42, 0.9);
+    }
+
+    .logo-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      background: radial-gradient(circle at 30% 0%, #e5e7eb 0%, #d4d4d8 38%, #020617 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #020617;
+      font-weight: 800;
+      font-size: 19px;
+      letter-spacing: 0.06em;
+    }
+
+    .title-block h1 {
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .title-block p {
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .badge {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 4px 12px;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(120deg, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.95));
+      backdrop-filter: blur(10px);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+    }
+
+    .language-switcher {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 22px;
+      padding: 8px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(51, 65, 85, 0.9);
+    }
+
+    .lang-button {
+      flex: 1 1 auto;
+      min-width: 90px;
+      border-radius: 999px;
+      padding: 7px 14px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.18s ease-out;
+    }
+
+    .lang-button span.flag {
+      font-size: 14px;
+      filter: drop-shadow(0 0 4px rgba(15, 23, 42, 0.9));
+    }
+
+    .lang-button span.code {
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
+    .lang-button span.label {
+      font-size: 12px;
+    }
+
+    .lang-button.active {
+      background: radial-gradient(circle at top, var(--accent-soft), rgba(15, 23, 42, 0.95));
+      color: var(--text);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4), 0 10px 25px rgba(15, 23, 42, 0.9);
+    }
+
+    .lang-button:not(.active):hover {
+      background: rgba(15, 23, 42, 0.85);
+      color: #e5e7eb;
+    }
+
+    .lang-section {
+      display: none;
+      gap: 18px;
+    }
+
+    .lang-section.active {
+      display: grid;
+    }
+
+    @media (min-width: 720px) {
+      .lang-section {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      }
+    }
+
+    .column {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.98));
+      border-radius: 18px;
+      border: 1px solid rgba(51, 65, 85, 0.85);
+      padding: 18px 18px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .column::before {
+      content: '';
+      position: absolute;
+      inset: -30% auto auto -25%;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(148, 163, 184, 0.12), transparent 65%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .column::after {
+      content: '';
+      position: absolute;
+      inset: auto -35% -55% auto;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.18), transparent 65%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .column-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    h2 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    p, li {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    ul {
+      list-style: none;
+      margin-top: 8px;
+      padding-left: 0;
+    }
+
+    li + li {
+      margin-top: 6px;
+    }
+
+    .pill-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      margin-bottom: 8px;
+      color: var(--muted);
+    }
+
+    .pill-label span.dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.3);
+    }
+
+    a {
+      color: #a5b4fc;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .contact-email span.icon {
+      font-size: 13px;
+    }
+
+    footer {
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    footer .right {
+      text-align: right;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="card">
+      <div class="card-inner">
+        <header>
+          <div class="app-title">
+            <div class="logo-pill">
+              <div class="logo-inner">
+                <img src="../assets/images/icon-1024-expo.png" alt="Vietnam Geography Quiz App Icon" style="width: 100%; height: 100%; border-radius: 14px; object-fit: cover;" />
+              </div>
+            </div>
+            <div class="title-block">
+              <h1>Vietnam Geography Quiz</h1>
+              <p>Official support &amp; contact page</p>
+            </div>
+          </div>
+          <div class="badge">
+            <span class="badge-dot"></span>
+            <span>Multi-language support • English • Tiếng Việt • 日本語</span>
+          </div>
+        </header>
+
+        <div class="language-switcher" role="tablist" aria-label="Language selector">
+          <button class="lang-button active" data-lang="en" role="tab" aria-selected="true">
+            <span class="flag">🇺🇸</span>
+            <span class="code">EN</span>
+            <span class="label">English</span>
+          </button>
+          <button class="lang-button" data-lang="vi" role="tab" aria-selected="false">
+            <span class="flag">🇻🇳</span>
+            <span class="code">VI</span>
+            <span class="label">Tiếng Việt</span>
+          </button>
+          <button class="lang-button" data-lang="ja" role="tab" aria-selected="false">
+            <span class="flag">🇯🇵</span>
+            <span class="code">JA</span>
+            <span class="label">日本語</span>
+          </button>
+        </div>
+
+        <!-- English -->
+        <section class="lang-section active" id="lang-en" aria-label="English support">
+          <div class="column">
+            <div class="column-inner">
+              <div class="pill-label"><span class="dot"></span><span>About this app</span></div>
+              <h2>Help &amp; Support</h2>
+              <p>
+                Vietnam Geography Quiz is an educational game that helps you learn and
+                review Vietnamese geography through levels and quizzes designed for
+                learners of all ages.
+              </p>
+              <p style="margin-top: 10px;">
+                If you have any questions, find a bug, or experience issues with
+                in-app purchases (for example, the “Remove Ads” purchase not being
+                applied correctly), please contact us.
+              </p>
+              <ul>
+                <li>• Questions about gameplay and levels</li>
+                <li>• Issues with ads or the “Remove Ads” purchase</li>
+                <li>• Bugs, crashes, or unexpected behavior</li>
+                <li>• Feedback and feature requests</li>
+              </ul>
+            </div>
+          </div>
+          <div class="column">
+            <div class="column-inner">
+              <div class="pill-label"><span class="dot"></span><span>Contact information</span></div>
+              <h2>Contact Us</h2>
+              <p>
+                For support, please send us an email with a short description of your
+                issue. If possible, include your device model, OS version, and app
+                version so we can help you faster.
+              </p>
+              <div class="contact-email">
+                <span class="icon">✉️</span>
+                <span>
+                  Email: <a href="mailto:support@example.com">support@example.com</a><br />
+                  (Replace with your real support email before publishing)
+                </span>
+              </div>
+              <p style="margin-top: 10px;">
+                You can also contact us regarding data privacy. Our full privacy
+                policy is available on the app store listing or in the app.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Vietnamese -->
+        <section class="lang-section" id="lang-vi" aria-label="Hỗ trợ tiếng Việt">
+          <div class="column">
+            <div class="column-inner">
+              <div class="pill-label"><span class="dot"></span><span>Giới thiệu ứng dụng</span></div>
+              <h2>Hỗ Trợ &amp; Liên Hệ</h2>
+              <p>
+                Vietnam Geography Quiz là ứng dụng trò chơi giáo dục giúp bạn học và
+                ôn lại kiến thức địa lý Việt Nam thông qua các màn chơi và câu hỏi
+                trắc nghiệm phù hợp với nhiều lứa tuổi.
+              </p>
+              <p style="margin-top: 10px;">
+                Nếu bạn có thắc mắc, phát hiện lỗi, hoặc gặp vấn đề với việc mua
+                hàng trong ứng dụng (ví dụ: mua gói "Gỡ quảng cáo" nhưng quảng cáo
+                chưa được tắt), vui lòng liên hệ với chúng tôi.
+              </p>
+              <ul>
+                <li>• Câu hỏi về cách chơi, cấp độ, nội dung câu hỏi</li>
+                <li>• Vấn đề liên quan đến quảng cáo hoặc gói "Gỡ quảng cáo"</li>
+                <li>• Lỗi ứng dụng, treo app, hoặc hoạt động không như mong đợi</li>
+                <li>• Góp ý, phản hồi hoặc đề xuất tính năng mới</li>
+              </ul>
+            </div>
+          </div>
+          <div class="column">
+            <div class="column-inner">
+              <div class="pill-label"><span class="dot"></span><span>Thông tin liên hệ</span></div>
+              <h2>Liên Hệ Hỗ Trợ</h2>
+              <p>
+                Để được hỗ trợ, bạn vui lòng gửi email với mô tả ngắn gọn về vấn đề
+                gặp phải. Nếu có thể, hãy kèm theo mẫu máy, phiên bản hệ điều hành
+                và phiên bản ứng dụng để chúng tôi hỗ trợ nhanh hơn.
+              </p>
+              <div class="contact-email">
+                <span class="icon">✉️</span>
+                <span>
+                  Email: <a href="mailto:support@example.com">support@example.com</a><br />
+                  (Hãy thay bằng email hỗ trợ thật của bạn trước khi phát hành)
+                </span>
+              </div>
+              <p style="margin-top: 10px;">
+                Bạn cũng có thể liên hệ với chúng tôi về các vấn đề liên quan đến
+                quyền riêng tư dữ liệu. Chính sách quyền riêng tư đầy đủ được hiển
+                thị trong ứng dụng hoặc trên trang ứng dụng trong cửa hàng.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Japanese -->
+        <section class="lang-section" id="lang-ja" aria-label="日本語サポート">
+          <div class="column">
+            <div class="column-inner">
+              <div class="pill-label"><span class="dot"></span><span>アプリについて</span></div>
+              <h2>サポート &amp; お問い合わせ</h2>
+              <p>
+                Vietnam Geography Quiz は、ベトナムの地理を楽しく学べる教育向け
+                クイズアプリです。さまざまなレベルと問題を通じて、子どもから大人
+                まで幅広いユーザーにお楽しみいただけます。
+              </p>
+              <p style="margin-top: 10px;">
+                質問がある場合や、不具合を発見した場合、「広告削除」購入が
+                正しく反映されないなどの問題が発生した場合は、お気軽にご連絡
+                ください。
+              </p>
+              <ul>
+                <li>• ゲームプレイや問題内容に関する質問</li>
+                <li>• 広告または「広告削除」購入に関する問題</li>
+                <li>• バグ、クラッシュ、予期しない動作</li>
+                <li>• ご意見・ご要望や新機能の提案</li>
+              </ul>
+            </div>
+          </div>
+          <div class="column">
+            <div class="column-inner">
+              <div class="pill-label"><span class="dot"></span><span>連絡先情報</span></div>
+              <h2>お問い合わせ方法</h2>
+              <p>
+                サポートが必要な場合は、問題の内容を簡単にまとめてメールで
+                ご連絡ください。可能であれば、ご利用の端末名、OS バージョン、
+                アプリのバージョンも記載していただけると、より迅速に対応できます。
+              </p>
+              <div class="contact-email">
+                <span class="icon">✉️</span>
+                <span>
+                  メール: <a href="mailto:support@example.com">support@example.com</a><br />
+                  （公開前に実際のサポート用メールアドレスに変更してください）
+                </span>
+              </div>
+              <p style="margin-top: 10px;">
+                個人情報の取り扱いに関するお問い合わせも受け付けております。
+                プライバシーポリシーの全文は、アプリ内またはストアのアプリページ
+                でご確認いただけます。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <footer>
+          <div>
+            Vietnam Geography Quiz • Support Page
+          </div>
+          <!-- <div class="right">
+            <div class="tag">
+              <span>App Support URL</span>
+              <span>•</span>
+              <span>Use this page in App Store Connect</span>
+            </div>
+          </div> -->
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const buttons = document.querySelectorAll('.lang-button');
+      const sections = document.querySelectorAll('.lang-section');
+
+      function setLanguage(lang) {
+        buttons.forEach((btn) => {
+          const isActive = btn.getAttribute('data-lang') === lang;
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-selected', String(isActive));
+        });
+
+        sections.forEach((section) => {
+          const isActive = section.id === 'lang-' + lang;
+          section.classList.toggle('active', isActive);
+        });
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const lang = btn.getAttribute('data-lang');
+          if (lang) setLanguage(lang);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
